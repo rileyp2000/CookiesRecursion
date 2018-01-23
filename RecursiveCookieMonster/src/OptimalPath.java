@@ -76,6 +76,14 @@ public class OptimalPath {
 		
 	}
 	
+	public int optimalPath(int r, int c) {
+		if(!junctions.isEmpty()) {
+			
+		}
+		else {
+			return maxCookies;
+		}
+	}
 	
 	
 }
