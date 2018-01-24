@@ -6,11 +6,9 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class OptimalPath {
-	int maxCookies;
 	int[][] grid;
 
 	public OptimalPath() {
-		maxCookies = 0;
 		Scanner keyboard = new Scanner(System.in);
 		String fileName;
 
@@ -21,7 +19,7 @@ public class OptimalPath {
 
 		Scanner sc = fileReader(fileName);
 		grid = createGrid(sc);
-		System.out.println("max cookies: " + optimalPath(grid.length, grid[0].length));
+		System.out.println("max cookies: " + optimalPath(grid.length-1, grid[0].length-1));
 	}
 
 	/**
@@ -98,23 +96,17 @@ public class OptimalPath {
 	}
 
 	public int optimalPath(int r, int c) {
-		if (r == 0 && c == 0)
-			return maxCookies;
-		else {
-			if (lookUp(r, c) == -1 && lookLeft(r, c) == -1) {
-				return 0;
-			} else {
-				if (lookUp(r, c) >= lookLeft(r, c)) {
-					maxCookies += grid[r][c];
-					optimalPath(r - 1, c);
-				} else {
-					maxCookies += grid[r][c];
-					optimalPath(r, c - 1);
-				}
-			}
-
+		int up = -1;
+		int left = -1;
+		if (lookUp(r, c) == -1 && lookLeft(r, c) == -1 && r == 0 && c == 0) {
+			return grid[r][c];
+		} else {
+			if(lookUp(r,c) != -1)
+				up = optimalPath(r - 1, c);
+			if(lookLeft(r,c) != -1)
+				left = optimalPath(r, c - 1);
+			return grid[r][c] + Math.max(up, left);
 		}
-		return maxCookies;
 	}
 
 }
