@@ -6,10 +6,24 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class OptimalPath {
-	Point current;
-	Stack<Point> junctions;
 	int maxCookies;
-	
+	int[][] grid;
+
+	public OptimalPath() {
+		maxCookies = 0;
+		Scanner keyboard = new Scanner(System.in);
+		String fileName;
+
+		// Open input file:
+
+		System.out.print("\nEnter input file name: ");
+		fileName = keyboard.nextLine().trim();
+
+		Scanner sc = fileReader(fileName);
+		grid = createGrid(sc);
+		System.out.println("max cookies: " + optimalPath(grid.length, grid[0].length));
+	}
+
 	/**
 	 * reads in a file
 	 * 
@@ -30,7 +44,7 @@ public class OptimalPath {
 
 		return daGrid;
 	}
-	
+
 	/**
 	 * This takes in a scanner and then converts into an int[][]
 	 * 
@@ -66,24 +80,41 @@ public class OptimalPath {
 			ret[i] = temp.get(i);
 		return ret;
 	}
-	
-	
-	public int lookDown() {
-		
+
+	public int lookUp(int r, int c) {
+		try {
+			return grid[r - 1][c];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return -1;
+		}
 	}
-	
-	public int lookRight() {
-		
+
+	public int lookLeft(int r, int c) {
+		try {
+			return grid[r][c - 1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return -1;
+		}
 	}
-	
+
 	public int optimalPath(int r, int c) {
-		if(!junctions.isEmpty()) {
-			
-		}
-		else {
+		if (r == 0 && c == 0)
 			return maxCookies;
+		else {
+			if (lookUp(r, c) == -1 && lookLeft(r, c) == -1) {
+				return 0;
+			} else {
+				if (lookUp(r, c) >= lookLeft(r, c)) {
+					maxCookies += grid[r][c];
+					optimalPath(r - 1, c);
+				} else {
+					maxCookies += grid[r][c];
+					optimalPath(r, c - 1);
+				}
+			}
+
 		}
+		return maxCookies;
 	}
-	
-	
+
 }
