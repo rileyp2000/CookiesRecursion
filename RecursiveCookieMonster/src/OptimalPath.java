@@ -126,16 +126,16 @@ public class OptimalPath {
 	}
 	
 	public int optimalPathFromTop(int r, int c, int goalR, int goalC) {
-		int up = -1;
-		int left = -1;
+		int down = -1;
+		int right = -1;
 		if (lookDown(r, c) == -1 && lookRight(r, c) == -1 && r == goalR && c == goalC) {
 			return grid[r][c];
 		} else {
-			if(lookUp(r,c) != -1)
-				up = optimalPathFromTop(r + 1, c, goalR, goalC);
-			if(lookLeft(r,c) != -1)
-				left = optimalPathFromTop(r, c + 1, goalR, goalC);
-			return grid[r][c] + Math.max(up, left);
+			if(lookDown(r,c) != -1)
+				down = optimalPathFromTop(r + 1, c, goalR, goalC);
+			if(lookRight(r,c) != -1)
+				right = optimalPathFromTop(r, c + 1, goalR, goalC);
+			return grid[r][c] + Math.max(down, right);
 		}
 	}
 
