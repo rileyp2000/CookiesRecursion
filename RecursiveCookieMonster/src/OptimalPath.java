@@ -19,7 +19,7 @@ public class OptimalPath {
 
 		Scanner sc = fileReader(fileName);
 		grid = createGrid(sc);
-		System.out.println("max cookies: " + optimalPath(grid.length-1, grid[0].length-1));
+		System.out.println("max cookies: " + optimalPathFromTop(0, 0, grid.length-1, grid[0].length-1));
 	}
 
 	/**
@@ -94,6 +94,22 @@ public class OptimalPath {
 			return -1;
 		}
 	}
+	
+	public int lookDown(int r, int c) {
+		try {
+			return grid[r + 1][c];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return -1;
+		}
+	}
+
+	public int lookRight(int r, int c) {
+		try {
+			return grid[r][c + 1];
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return -1;
+		}
+	}
 
 	public int optimalPath(int r, int c) {
 		int up = -1;
@@ -105,6 +121,20 @@ public class OptimalPath {
 				up = optimalPath(r - 1, c);
 			if(lookLeft(r,c) != -1)
 				left = optimalPath(r, c - 1);
+			return grid[r][c] + Math.max(up, left);
+		}
+	}
+	
+	public int optimalPathFromTop(int r, int c, int goalR, int goalC) {
+		int up = -1;
+		int left = -1;
+		if (lookDown(r, c) == -1 && lookRight(r, c) == -1 && r == goalR && c == goalC) {
+			return grid[r][c];
+		} else {
+			if(lookUp(r,c) != -1)
+				up = optimalPathFromTop(r + 1, c, goalR, goalC);
+			if(lookLeft(r,c) != -1)
+				left = optimalPathFromTop(r, c + 1, goalR, goalC);
 			return grid[r][c] + Math.max(up, left);
 		}
 	}
